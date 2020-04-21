@@ -20,6 +20,16 @@ return [
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
     ],
 
+    'currency_conversion' =>[
+        'base_uri' => env('CURRENCY_CONVERSION_BASE_URI'),
+        'api_key' => env('CURRENCY_CONVERSION_API_KEY'),
+    ],
+
+    'placetopay' =>[
+        'base_uri' => env('PLACE_TO_PAY_BASE_URI'),
+        'class' => App\Services\PlaceToPayService::class,
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
