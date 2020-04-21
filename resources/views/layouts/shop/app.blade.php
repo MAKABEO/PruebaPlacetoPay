@@ -33,6 +33,7 @@
 <body class="goto-here">
 @include('layouts.header')
 @include('layouts.menu.top-menu')
+@include('layouts.shop.banner')
 <!-- END nav -->
 
 @yield('content')
