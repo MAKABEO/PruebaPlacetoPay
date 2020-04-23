@@ -7,9 +7,13 @@
             <div class="row justify-content-center">
                 <div class="col-md-10 mb-5 text-center">
                     <ul class="product-category">
-                        <li><a href="{{url('/shop')}}" class="active">Todos</a></li>
+                        <li><a href="{{url('/shop')}}">Todos</a></li>
                         @foreach($categories as $category)
-                            <li><a href="{{url('/shop/category',$category->id)}}">{{$category->name}}</a></li>
+                            @if($category->id == $selectedCategory)
+                                <li><a class="active" href="{{url('/shop/category',$category->id)}}">{{$category->name}}</a></li>
+                            @else
+                                <li><a href="{{url('/shop/category',$category->id)}}">{{$category->name}}</a></li>
+                            @endif
                         @endforeach
                     </ul>
                 </div>

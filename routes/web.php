@@ -17,9 +17,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/shop', function () {
-    return view('products/index');
-});
+Route::get('/shop', 'ShopController@index');
+Route::get('/shop/{product}', 'ShopController@show');
+Route::get('/shop/category/{category}', 'ShopController@shopCategory');
+Route::post('/shop/cart', 'ProductsController@addToCart');
+Route::patch('/shop/cart', 'ShopController@updateCart');
+Route::delete('/shop/cart', 'ShopController@removeFromCart');
 
 Auth::routes();
 
