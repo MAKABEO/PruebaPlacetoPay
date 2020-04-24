@@ -14,7 +14,6 @@ class PaymentPlatformsTableSeeder extends Seeder
     {
         PaymentPlatform::create([
             'name' => 'PlaceToPay',
-            'image' => 'img/payment-platforms/placetopay.jpg',
         ]);
     }
 }
