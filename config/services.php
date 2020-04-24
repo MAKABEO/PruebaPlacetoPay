@@ -27,6 +27,9 @@ return [
 
     'placetopay' =>[
         'base_uri' => env('PLACE_TO_PAY_BASE_URI'),
+        'login' => env('PLACE_TO_PAY_LOGIN'),
+        'trankey' => env('PLACE_TO_PAY_TRANKEY'),
+        'base_currency' => 'usd',
         'class' => App\Services\PlaceToPayService::class,
     ],
 

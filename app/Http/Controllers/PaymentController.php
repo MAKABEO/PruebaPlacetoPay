@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Resolvers\PaymentPlatformResolver;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
@@ -24,7 +25,6 @@ class PaymentController extends Controller
     {
         $rules = [
             'value' => ['required','numeric','min:5'],
-            'currency' => ['required','exists:currencies,iso'],
             'payment_platform' => ['required','exists:payment_platforms,id'],
         ];
 
@@ -44,11 +44,11 @@ class PaymentController extends Controller
             $paymentPlatform = $this->paymentPlatformResolver->resolvePlatform(session()->get('paymentPlatformId'));
             return $paymentPlatform->handleApproval();
         }
-        return redirect()->route('home')->withErrors('Paaaaaaaaaaaaila no se puede obtener la plataforma');
+        return redirect()->route('home')->withErrors('No se puede obtener la plataforma');
     }
 
     public function cancelled()
     {
-        return redirect()->route('home')->withErrors('Paaaaaaaaaaaaila cancelo');
+        return redirect()->route('home')->withErrors('Cancelo');
     }
 }

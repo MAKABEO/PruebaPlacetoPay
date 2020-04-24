@@ -88,6 +88,26 @@
 
     <section class="ftco-section ftco-category ftco-no-pt">
         <div class="container">
+
+            @if(isset($errors) && $errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{$error}}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            @if(session()->has('success'))
+                <div class="alert alert-success">
+                    <ul>
+                        @foreach(session()->get('success') as $message)
+                            <li>{{$message}}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="row">
                 <div class="col-md-8">
                     <div class="row">

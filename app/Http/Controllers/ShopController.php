@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\PaymentPlatform;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -62,6 +63,12 @@ class ShopController extends Controller
     public function showCart()
     {
         return view('products.cart');
+    }
+
+    public function showCheckout()
+    {
+        $paymentPlatforms = PaymentPlatform::all();
+        return view('products.checkout')->with(['paymentPlatforms' => $paymentPlatforms]);
     }
 
     public function addToCart(Request $request)
