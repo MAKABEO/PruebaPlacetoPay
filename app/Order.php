@@ -19,7 +19,7 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'customer_name','customer_email','customer_mobile','status'
+        'customer_name','customer_email','customer_mobile','status','totalAmmount'
     ];
 
     public static  $rules = [

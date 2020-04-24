@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Order;
+use App\Product;
 use App\Traits\ConsumesExternalServices;
 use Dnetix\Redirection\PlacetoPay;
 use Illuminate\Http\Request;
@@ -111,8 +112,23 @@ class PlaceToPayService
         $order->customer_email = Auth::user()->email;
         $order->customer_mobile = $request->customer_mobile;
         $order->status = $response['status']['status'];
+        $order->totalAmmount = 0;
         Auth::user()->orders()->save($order);
         $order->save();
+
+        $cart = session()->get('cart');
+        $keys =  array_keys($cart);
+        $total = 0;
+        foreach ($keys as $key){
+            $total += $cart[$key]['quantity']*$cart[$key]['price'];
+            $order->products()->attach($key, [
+                'quantity' => $cart[$key]['quantity'],
+                'ammount' => ($cart[$key]['quantity']*$cart[$key]['price'])
+            ]);
+        }
+        $order->totalAmmount = $total;
+        $order->save();
+        session()->forget('cart');
 
         if ($status === 'OK') {
             return redirect($response['processUrl']);
