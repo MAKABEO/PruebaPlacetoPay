@@ -1,6 +1,8 @@
 @extends('layouts.shop.app')
 
 @section('content')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <input id="id" name="id" type="hidden" value="{{$product->id}}">
     <section class="ftco-section">
         <div class="container">
             <div class="row">
@@ -33,7 +35,7 @@
                     </div>
                     @auth
                         <p>
-                            <a href="#" class="btn btn-primary py-3 px-5" data-toggle="modal" data-target="#modal">
+                            <a href="#" class="btn btn-primary py-3 px-5" id="addCart" data-toggle="modal" data-target="#modal">
                                 Agregar al carrito
                             </a>
                         </p>
@@ -60,8 +62,8 @@
                     El producto ha sido agregado correctamente deseas ir al carrito o continuar comprando
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Seguir comprando</button>
-                    <button type="button" class="btn btn-primary">Seguir al carrito</button>
+                    <a href="{{ url('/shop') }}" class="btn btn-secondary">Seguir comprando</a>
+                    <a href="{{ url('/cart/shop') }}" class="btn btn-primary">Seguir al carrito</a>
                 </div>
             </div>
         </div>
@@ -69,8 +71,30 @@
 @endsection
 @push('scripts')
     <script>
-        $(document).ready(function(){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        });
+        $('#addCart').click(()=>{
+            let quantity  = $('#quantity').val();
+            let id  = $('#id').val();
+            $.ajax({
+                type:'POST',
+                url:'/shop/cart',
+                data:{id:id, quantity:quantity},
+                success:function(data){
+                    let suma = 0;
+                    let llaves = Object.keys(data);
+                    llaves.forEach((item, index)=>{
+                        suma += parseInt(data[item].quantity);
+                    });
+                    $('#cart').html('<span class="icon-shopping_cart"></span>' + suma);
+                }
+            });
+        });
 
+        $(document).ready(function(){
             var quantitiy=0;
             $('.quantity-right-plus').click(function(e){
                 // Stop acting like a button

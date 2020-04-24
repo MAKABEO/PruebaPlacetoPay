@@ -23,6 +23,22 @@ class ShopController extends Controller
             ]);
     }
 
+    public function getCart()
+    {
+        $cart = session()->get('cart');
+        if(!isset($cart))
+        {
+            return 0;
+        }
+        else{
+            $suma = 0;
+            foreach ($cart as $product){
+                $suma += $product['quantity'];
+            }
+            return $suma;
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -35,6 +51,17 @@ class ShopController extends Controller
             [
                 'product' => $product
             ]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function showCart()
+    {
+        return view('products.cart');
     }
 
     public function addToCart(Request $request)
@@ -51,31 +78,37 @@ class ShopController extends Controller
             $cart = [
                 $id => [
                     "name" => $product->product_name,
+                    "description" => $product->description,
                     "quantity" => $quantity,
                     "price" => $product->price,
                 ]
             ];
             session()->put('cart', $cart);
-            return redirect()->back()->with('success', 'Product added to cart successfully!');
+            return response()->json(
+                session()->get('cart')
+            , 200);
         }
 
         // if cart not empty then check if this product exist then increment quantity
         if(isset($cart[$id])) {
             $cart[$id]['quantity']++;
             session()->put('cart', $cart);
-            return redirect()->back()->with('success', 'Product added to cart successfully!');
+            return response()->json(
+                session()->get('cart')
+            , 200);
         }
 
         // if item not exist in cart then add to cart with quantity = 1
         $cart[$id] = [
-            "name" => $product->name,
-            "quantity" => 1,
+            "name" => $product->product_name,
+            "quantity" => $quantity,
+            "description" => $product->description,
             "price" => $product->price,
         ];
         session()->put('cart', $cart);
-        return response()->json([
-            'Agregado correctamente'
-        ], 200);
+        return response()->json(
+            session()->get('cart')
+        , 200);
     }
 
     public function updateCart(Request $request)
@@ -85,7 +118,9 @@ class ShopController extends Controller
             $cart = session()->get('cart');
             $cart[$request->id]["quantity"] = $request->quantity;
             session()->put('cart', $cart);
-            session()->flash('success', 'Carrito actualizado correctamente');
+            return response()->json(
+                session()->get('cart')
+                , 200);
         }
     }
 
@@ -97,7 +132,7 @@ class ShopController extends Controller
                 unset($cart[$request->id]);
                 session()->put('cart', $cart);
             }
-            session()->flash('success', 'Producto removido correctamente');
+            return redirect('cart/shop');
         }
     }
 }

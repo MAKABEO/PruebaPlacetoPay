@@ -21,7 +21,7 @@
                             </form>
                         </div>
                     </li>
-                    <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+                    <li class="nav-item cta cta-colored"><a href="{{ url('/cart/shop') }}" id="cart" class="nav-link"><span class="icon-shopping_cart"></span>0</a></li>
                 @else
                     <li class="nav-item"><a href="{{ route('login') }}" class="nav-link">Ingresa</a></li>
 
@@ -33,3 +33,17 @@
         </div>
     </div>
 </nav>
+
+@push('scripts')
+    <script>
+        $(document).ready(function(){
+            $.ajax({
+                type:'GET',
+                url:'/cart',
+                success:function(data){
+                    $('#cart').html('<span class="icon-shopping_cart"></span>' + data);
+                }
+            });
+        });
+    </script>
+@endpush
