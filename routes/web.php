@@ -21,6 +21,8 @@ Route::get('/shop', 'ShopController@index');
 Route::get('/shop/{product}', 'ShopController@show');
 Route::get('/shop/category/{category}', 'ShopController@shopCategory');
 Route::get('/cart/shop', 'ShopController@showCart');
+Route::get('/profile/orders', 'OrderController@index');
+Route::get('/profile/orders/{order}', 'OrderController@show');
 Route::post('/shop/cart', 'ShopController@addToCart');
 Route::patch('/shop/cart', 'ShopController@updateCart');
 Route::delete('/shop/cart', 'ShopController@removeFromCart');
